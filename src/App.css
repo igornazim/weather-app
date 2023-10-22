@@ -1,10 +1,37 @@
-.App {
+body {
   background: linear-gradient(45deg, #4158d0 0%, #91BEF3 100%);
+}
+
+.App {
   display: flex;
+  align-items: flex-start;
   flex-wrap: wrap;
+  font-family: Inter;
   min-height: 100vh;
   text-align: center;
   color: white;
+  margin: auto;
+}
+
+.header {
+  display: flex;
+  height: 48px;
+  width: 100vw;
+  background-color: rgba(255, 255, 255, 0.2);
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.left-column {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 640px;
+  justify-content: flex-start;
+  width: 60%;
+  margin: 0 0 0 40px;
+  border-right: 1px solid #fff;
 }
 
 .App-logo {
@@ -12,34 +39,135 @@
   pointer-events: none;
 }
 
-.App-header {
+.geo {
   display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+}
+
+.geo img {
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
 }
 
 .temp-container {
+  width: 240px;
+  height: 320px;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 
 .weatherIcon {
-  width: 143px;
-  height: 100px;
+  width: 120px;
+  height: 84px;
+}
+
+.cityName {
+  font-weight: 300;
+  line-height: 120%;
+  font-size: 40px;
+  margin: 0 0 16px 0;
+}
+
+.temp-group {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.current-data {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 120%;
+  margin: 0 0 16px 0;
 }
 
 .temp {
-  font-family: Inter;
   font-weight: 100;
   line-height: 120%;
-  font-size: 164px;
+  font-size: 80px;
   margin: 0;
 }
 
 sup {
-  font-family: Inter;
   font-size: 32px;
   font-style: normal;
   font-weight: 400;
-  line-height: 120%; /* 38.4px */
+  line-height: 120%;
   letter-spacing: -1.6px;
 }
 
+.skyState {
+  display: flex;
+  align-items: center;
+  min-width: 320px
+}
+
+.skyState p {
+  font-size: 24px;
+  font-weight: 300;
+  margin: 0;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  width: 600px;
+  justify-content: flex-start;
+  column-gap: 16px;
+}
+
+.card {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  flex: 0 1 110px;
+  justify-content: space-around;
+  max-width: 110px;
+  height: 200px;
+  font-size: 24px;
+  font-weight: 400;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid #fff;
+  border-radius: 16px;
+  padding: 16px 24px 16px 24px;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+.card img {
+  width: 80px;
+  height: 54px;
+  margin: 0;
+  padding: 0;
+}
+
+
+.additional-panel {
+  display: flex;
+  flex-wrap: nowrap;
+  column-gap: 32px;
+  width: 600px;
+  margin-bottom: 16px;
+}
+
+.wind-group, .humidity-group {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.additional-panel img {
+  width: 22px;
+  height: 22px;
+  margin-right: 4px;
+}
