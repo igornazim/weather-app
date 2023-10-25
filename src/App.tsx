@@ -3,6 +3,8 @@ import axios, { AxiosError } from 'axios';
 import './App.css';
 import Cards from './components/Cards';
 import Header from './components/Header';
+import map from './getWeatherIcon';
+import { mapType } from './getWeatherIcon';
 
 const App = () => {
   const [temp, setTemp] = useState(0);
@@ -10,6 +12,7 @@ const App = () => {
   const [humidity, setHumidity] = useState(0);
   const [wind, setWind] = useState(0);
   const [skyState, setSky] = useState('')
+  const [currentIcon, setIcon] = useState('');
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
 
@@ -36,6 +39,17 @@ const App = () => {
           }
         );
         const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
+
+        const icon = map[data.weather[0].main as keyof mapType];
+        const dayIcon = typeof icon === 'string' ? icon : icon['D'];
+        const nightIcon = typeof icon === 'string' ? icon : icon['N'];
+        if (data.weather[0].icon.includes('d')) {
+          setIcon(typeof icon === 'string' ? icon : dayIcon);
+          console.log(currentIcon)
+        } if (data.weather[0].icon.includes('n')) {
+          setIcon(typeof icon === 'string' ? icon : nightIcon);
+        }
+
         const roundedTemp = Math.round(data.main.temp);
         setTemp(roundedTemp);
         setName(data.name);
@@ -73,17 +87,17 @@ const App = () => {
             <sup>°C</sup>
           </div>
           <div className="skyState">
-            <img className="weatherIcon" src={`${process.env.PUBLIC_URL}/cloudy.svg`} alt='cloudy' />
+            <img className="weatherIcon" src={currentIcon} alt='cloudy' />
             <p>{skyState}</p>
           </div>
         </div>
         <div className="additional-panel">
           <div className="wind-group">
-            <img className="weatherIcon" src={`${process.env.PUBLIC_URL}/wind.svg`} alt='wind speed' />
+            <img className="windIcon" src={`${process.env.PUBLIC_URL}/wind.svg`} alt='wind speed' />
             <p>Wind {wind} m/s</p>
           </div>
           <div className="humidity-group">
-            <img className="weatherIcon" src={`${process.env.PUBLIC_URL}/hum.svg`} alt='humidity is' />
+            <img className="humidityIcon" src={`${process.env.PUBLIC_URL}/hum.svg`} alt='humidity is' />
             <p>Hum {humidity} %</p>
           </div>
         </div>
