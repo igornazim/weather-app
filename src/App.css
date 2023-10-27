@@ -3,6 +3,8 @@ body {
 }
 
 .App {
+  min-width: 375px;
+  max-width: 1440px;
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
@@ -139,6 +141,11 @@ sup {
   padding: 16px 24px 16px 24px;
   box-sizing: border-box;
   margin-bottom: 8px;
+}
+
+.card:hover {
+  position: relative;
+  bottom: 4px;
 }
 
 .card img {
