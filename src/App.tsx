@@ -5,10 +5,58 @@ import Cards from './components/Cards';
 import Header from './components/Header';
 import map from './getWeatherIcon';
 import { mapType } from './getWeatherIcon';
+import { ForecastContext } from './contexts/index';
+import { mainweatherData } from './components/Cards';
+
+export type Weather = {
+  description: string;
+  icon: string;
+  id: number;
+  main: string;
+}
+
+interface IWeatherData {
+  base: string;
+  clouds: {
+    all: number;
+  };
+  cod: 200;
+  coord: {
+    lon: number;
+    lat: number;
+  };
+  dt: number;
+  id: number;
+  main: mainweatherData;
+  name: string;
+  sys: {
+    country: string;
+    sunrise: number;
+    sunset: number;
+  };
+  timezone: number;
+  visibility: number;
+  weather: Weather[];
+  wind: {
+    speed: number;
+    deg: number;
+    dust: number;
+  };
+}
+
+const getIcon = (currentIcon: string, weatherData: IWeatherData) => {
+  const dayIcon = typeof currentIcon === 'string' ? currentIcon : currentIcon['D'];
+  const nightIcon = typeof currentIcon === 'string' ? currentIcon : currentIcon['N'];
+  if (weatherData.weather[0].icon.includes('d')) {
+    return typeof currentIcon === 'string' ? currentIcon : dayIcon;
+  } if (weatherData.weather[0].icon.includes('n')) {
+    return typeof currentIcon === 'string' ? currentIcon : nightIcon;
+  }
+};
 
 const App = () => {
   const [temp, setTemp] = useState(0);
-  const [name, setName] = useState('london');
+  const [name, setName] = useState('');
   const [humidity, setHumidity] = useState(0);
   const [wind, setWind] = useState(0);
   const [skyState, setSky] = useState('')
@@ -41,14 +89,6 @@ const App = () => {
         const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
 
         const icon = map[data.weather[0].main as keyof mapType];
-        const dayIcon = typeof icon === 'string' ? icon : icon['D'];
-        const nightIcon = typeof icon === 'string' ? icon : icon['N'];
-        if (data.weather[0].icon.includes('d')) {
-          setIcon(typeof icon === 'string' ? icon : dayIcon);
-          console.log(currentIcon)
-        } if (data.weather[0].icon.includes('n')) {
-          setIcon(typeof icon === 'string' ? icon : nightIcon);
-        }
 
         const roundedTemp = Math.round(data.main.temp);
         setTemp(roundedTemp);
@@ -56,6 +96,12 @@ const App = () => {
         setHumidity(data.main.humidity);
         setWind(Math.round(data.wind.speed));
         setSky(data.weather[0].description);
+
+        const iconUrl = getIcon(icon, data);
+        if (iconUrl !== undefined) {
+          setIcon(iconUrl);
+        }
+
       } catch (err) {
         console.log(err)
         if (!(err instanceof AxiosError)) {
@@ -69,41 +115,43 @@ const App = () => {
   }, [latitude, longitude]);
 
   return (
-    <div className="App">
-      <Header />
-      <div className="left-column">
-        <div className="temp-container">
-          <div className="geo">
-            <img className="weatherIcon" src={`${process.env.PUBLIC_URL}/geo.svg`} alt='geo' />
-            <p className="cityName">
-              {name}
-            </p>
+    <ForecastContext.Provider value={ name }>
+      <div className="App">
+        <Header />
+        <div className="left-column">
+          <div className="temp-container">
+            <div className="geo">
+              <img className="weatherIcon" src={`${process.env.PUBLIC_URL}/geo.svg`} alt='geo' />
+              <p className="cityName">
+                {name}
+              </p>
+            </div>
+            <p className="current-data"> {formattedDate}</p>
+            <div className="temp-group">
+              <p className="temp">
+                {temp}
+              </p>
+              <sup>°C</sup>
+            </div>
+            <div className="skyState">
+              <img className="weatherIcon" src={currentIcon} alt='cloudy' />
+              <p>{skyState}</p>
+            </div>
           </div>
-          <p className="current-data"> {formattedDate}</p>
-          <div className="temp-group">
-            <p className="temp">
-              {temp}
-            </p>
-            <sup>°C</sup>
+          <div className="additional-panel">
+            <div className="wind-group">
+              <img className="windIcon" src={`${process.env.PUBLIC_URL}/wind.svg`} alt='wind speed' />
+              <p>Wind {wind} m/s</p>
+            </div>
+            <div className="humidity-group">
+              <img className="humidityIcon" src={`${process.env.PUBLIC_URL}/hum.svg`} alt='humidity is' />
+              <p>Hum {humidity} %</p>
+            </div>
           </div>
-          <div className="skyState">
-            <img className="weatherIcon" src={currentIcon} alt='cloudy' />
-            <p>{skyState}</p>
-          </div>
+          <Cards />
         </div>
-        <div className="additional-panel">
-          <div className="wind-group">
-            <img className="windIcon" src={`${process.env.PUBLIC_URL}/wind.svg`} alt='wind speed' />
-            <p>Wind {wind} m/s</p>
-          </div>
-          <div className="humidity-group">
-            <img className="humidityIcon" src={`${process.env.PUBLIC_URL}/hum.svg`} alt='humidity is' />
-            <p>Hum {humidity} %</p>
-          </div>
-        </div>
-        <Cards />
       </div>
-    </div>
+    </ForecastContext.Provider>
   );
 }
 

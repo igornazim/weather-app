@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
 import '../App.css';
 import Card from './Card';
+import map from '../getWeatherIcon';
+import { mapType } from '../getWeatherIcon';
+import { ForecastContext } from '../contexts/index';
 
-type weatherData = {
+type iconData = {
   "id": 500,
   "main": "Rain",
   "description": "light rain",
   "icon": "10n"
 }
 
-type mainweatherData = {
+export type mainweatherData = {
     feels_like: number;
     grnd_level: number;
     humidity: number;
@@ -35,26 +38,36 @@ interface IweatherPerDay {
     pod: string;
   }
   visibility: number;
-  weather: weatherData[];
+  weather: iconData[];
   wind: {speed: number, deg: number, gust: number};
 }
 
-// const coll = [10, 10, 10, 10, 10];
 const getWeekDay = (date: Date) => {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   return days[date.getDay()];
 }
 
+const getIcon = (currentIcon: string, weatherData: IweatherPerDay) => {
+  const dayIcon = typeof currentIcon === 'string' ? currentIcon : currentIcon['D'];
+  const nightIcon = typeof currentIcon === 'string' ? currentIcon : currentIcon['N'];
+  if (weatherData.weather[0].icon.includes('d')) {
+    return typeof currentIcon === 'string' ? currentIcon : dayIcon;
+  } if (weatherData.weather[0].icon.includes('n')) {
+    return typeof currentIcon === 'string' ? currentIcon : nightIcon;
+  }
+};
+// почему линтер решил, что в getIcon может быть string | undefiner?
+// когда я вместо return передавал значение в хук, линтер не ругался
+
 const Cards = () => {
-  const [name, setName] = useState('london');
+  const currentName = useContext(ForecastContext);
   const [data, setData] = useState<IweatherPerDay[]>()
 
   useEffect(()=> {
     const fetchWeatherData = async () => {
       try {
-        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${name}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
+        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${currentName}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
         const filteredData = data.list.filter((weatherPerDay: IweatherPerDay) => weatherPerDay.dt_txt.includes('15:00:00'));
-        console.log(filteredData)
         setData(filteredData);
       } catch (err) {
         console.log(err)
@@ -66,14 +79,16 @@ const Cards = () => {
       }
     } 
     fetchWeatherData();
-  }, [name])
+  }, [currentName])
 
   return (
     <div className="cards">
       {data?.map((weather: IweatherPerDay) => {
+        const icon = map[weather.weather[0].main as keyof mapType];
+        const iconUrl = getIcon(icon, weather);
         const temp = weather.main.temp;
         const day = getWeekDay(new Date(weather.dt_txt))
-        return <Card temp={temp} day={day} key={weather.dt} />
+        return <Card temp={temp} day={day} key={weather.dt} icon={iconUrl!} />
       })}
     </div>
   );
