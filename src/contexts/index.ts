@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-const ForecastContext = createContext('');
+const ForecastContext = createContext('Paris');
 
 export { ForecastContext };

@@ -60,13 +60,15 @@ const getIcon = (currentIcon: string, weatherData: IweatherPerDay) => {
 // когда я вместо return передавал значение в хук, линтер не ругался
 
 const Cards = () => {
+  console.log(1)
   const currentName = useContext(ForecastContext);
+  const [name, setName] = useState(currentName);
   const [data, setData] = useState<IweatherPerDay[]>()
 
   useEffect(()=> {
     const fetchWeatherData = async () => {
       try {
-        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${currentName}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
+        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${name}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
         const filteredData = data.list.filter((weatherPerDay: IweatherPerDay) => weatherPerDay.dt_txt.includes('15:00:00'));
         setData(filteredData);
       } catch (err) {
@@ -79,7 +81,7 @@ const Cards = () => {
       }
     } 
     fetchWeatherData();
-  }, [currentName])
+  }, [name])
 
   return (
     <div className="cards">
