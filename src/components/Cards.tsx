@@ -60,7 +60,6 @@ const getIcon = (currentIcon: string, weatherData: IweatherPerDay) => {
 // когда я вместо return передавал значение в хук, линтер не ругался
 
 const Cards = () => {
-  console.log(1)
   const currentName = useContext(ForecastContext);
   const [name, setName] = useState(currentName);
   const [data, setData] = useState<IweatherPerDay[]>()
