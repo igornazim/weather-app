@@ -60,14 +60,13 @@ const getIcon = (currentIcon: string, weatherData: IweatherPerDay) => {
 // когда я вместо return передавал значение в хук, линтер не ругался
 
 const Cards = () => {
-  const currentName = useContext(ForecastContext);
-  const [name, setName] = useState(currentName);
+  const contextData = useContext(ForecastContext); // целый вечер просидел мучаясь с типами контекста
   const [data, setData] = useState<IweatherPerDay[]>()
 
   useEffect(()=> {
     const fetchWeatherData = async () => {
       try {
-        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${name}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
+        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${contextData?.city}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
         const filteredData = data.list.filter((weatherPerDay: IweatherPerDay) => weatherPerDay.dt_txt.includes('15:00:00'));
         setData(filteredData);
       } catch (err) {
@@ -80,7 +79,7 @@ const Cards = () => {
       }
     } 
     fetchWeatherData();
-  }, [name])
+  }, [contextData?.city])
 
   return (
     <div className="cards">

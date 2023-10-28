@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
 import '../App.css';
 
 import map from '../getWeatherIcon';
 import { mapType } from '../getWeatherIcon';
 import { mainweatherData } from '../components/Cards';
+import { ForecastContext } from '../contexts/index';
 
 export type Weather = {
   description: string;
@@ -38,7 +39,7 @@ interface IWeatherData {
   wind: {
     speed: number;
     deg: number;
-    dust: number; // Не уверен, что это должно быть тут
+    dust: number;
   };
 }
 
@@ -53,6 +54,8 @@ const getIcon = (currentIcon: string, weatherData: IWeatherData) => {
 };
 
 const MainData = () => {
+  const contextData = useContext(ForecastContext);
+
   const [temp, setTemp] = useState(0);
   const [name, setName] = useState('');
   const [humidity, setHumidity] = useState(0);
@@ -100,6 +103,8 @@ const MainData = () => {
           setIcon(iconUrl);
         }
 
+        contextData?.setCity(data.name);
+
       } catch (err) {
         console.log(err)
         if (!(err instanceof AxiosError)) {
@@ -110,7 +115,7 @@ const MainData = () => {
       }
     } 
     fetchWeatherData();
-  }, [latitude, longitude]);
+  }, [latitude, longitude, contextData]);
 
   return (
     <>

@@ -1,5 +1,10 @@
 import { createContext } from 'react';
 
-const ForecastContext = createContext('Paris');
+type ForecastContextType = {
+  city: string;
+  setCity: (newCity: string) => void,
+}
+
+const ForecastContext = createContext<ForecastContextType | null>(null);
 
 export { ForecastContext };
