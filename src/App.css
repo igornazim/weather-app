@@ -20,9 +20,10 @@ body {
   height: 48px;
   width: 100vw;
   background-color: rgba(255, 255, 255, 0.2);
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font-size: 24px;
+  padding: 0 20px 0 20px;
   margin-bottom: 24px;
 }
 
@@ -178,4 +179,14 @@ sup {
   width: 22px;
   height: 22px;
   margin-right: 4px;
+}
+
+input {
+  width: 160px;
+  height: 32px;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid #fff;
+  border-radius: 10px;
 }

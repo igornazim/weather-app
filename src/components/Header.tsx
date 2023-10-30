@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import '../App.css';
 
-const Header = () => {
+const Header = ({ children }: PropsWithChildren) => {
 
   return (
     <div className="header">
       <p>Weather App</p>
+      {children}
     </div>
   );
 }
