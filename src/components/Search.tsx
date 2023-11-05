@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
-import { ForecastContext } from './contexts/index';
-import './App.css';
+import { ForecastContext } from '../contexts/index';
 
 const Search = () => {
   const contextData = useContext(ForecastContext);
@@ -13,7 +12,7 @@ const Search = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    contextData?.setCity(city);
+    contextData?.getData({city});
     setCity('');
   };
 

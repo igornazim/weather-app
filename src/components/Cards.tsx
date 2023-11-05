@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
 import axios, { AxiosError } from 'axios';
-import '../App.css';
 import Card from './Card';
 import map from '../getWeatherIcon';
 import { mapType } from '../getWeatherIcon';
@@ -25,7 +24,7 @@ export type mainweatherData = {
     temp_min: number;
 }
 
-interface IweatherPerDay {
+export interface IweatherPerDay {
   clouds: {all: number};
   dt: number;
   dt_txt: string;
@@ -56,18 +55,16 @@ const getIcon = (currentIcon: string, weatherData: IweatherPerDay) => {
     return typeof currentIcon === 'string' ? currentIcon : nightIcon;
   }
 };
-// почему линтер решил, что в getIcon может быть string | undefiner?
-// когда я вместо return передавал значение в хук, линтер не ругался
 
 const Cards = () => {
-  const contextData = useContext(ForecastContext); // целый вечер просидел мучаясь с типами контекста
+  const contextData = useContext(ForecastContext);
   const [data, setData] = useState<IweatherPerDay[]>()
 
   useEffect(()=> {
     const fetchWeatherData = async () => {
       try {
-        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${contextData?.city}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
-        const filteredData = data.list.filter((weatherPerDay: IweatherPerDay) => weatherPerDay.dt_txt.includes('15:00:00'));
+        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${contextData?.currentData?.name}&appid=ada1ba65089546899569c283f09d47fb&units=metric&timezone=7200`);
+        const filteredData = data.list.filter((weatherPerDay: IweatherPerDay) => weatherPerDay.dt_txt.includes('12:00:00'));
         setData(filteredData);
       } catch (err) {
         console.log(err)
@@ -79,7 +76,7 @@ const Cards = () => {
       }
     } 
     fetchWeatherData();
-  }, [contextData?.city])
+  }, [contextData])
 
   return (
     <div className="cards">

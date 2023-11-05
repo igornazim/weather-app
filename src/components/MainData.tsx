@@ -1,6 +1,4 @@
 import { useEffect, useState, useContext } from 'react';
-import axios, { AxiosError } from 'axios';
-import '../App.css';
 
 import map from '../getWeatherIcon';
 import { mapType } from '../getWeatherIcon';
@@ -14,7 +12,7 @@ export type Weather = {
   main: string;
 }
 
-interface IWeatherData {
+export interface IWeatherData {
   base: string;
   clouds: {
     all: number;
@@ -62,8 +60,7 @@ const MainData = () => {
   const [wind, setWind] = useState(0);
   const [skyState, setSky] = useState('');
   const [currentIcon, setIcon] = useState('');
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
+  const [location, setLocation] = useState({lon: 48.8566, lat: 2.3522});
 
   const today = new Date();
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -71,51 +68,41 @@ const MainData = () => {
   const monthIndex = today.getMonth();
   const year = today.getFullYear();
   const formattedDate = `${day} ${months[monthIndex]} ${year}`;
-  
+
   useEffect(() => {
-    const fetchWeatherData = async () => {
-      try {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const { latitude, longitude } = position.coords;
-            setLatitude(latitude);
-            setLongitude(longitude);
-          },
-          error => {
-            setLatitude(48.8566);
-            setLongitude(2.3522);
-            console.error(`Ошибка: ${error.message}`);
-          }
-        );
-        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=ada1ba65089546899569c283f09d47fb&units=metric`);
-
-        const icon = map[data.weather[0].main as keyof mapType];
-
-        const roundedTemp = Math.round(data.main.temp);
-        setTemp(roundedTemp);
-        setName(data.name);
-        setHumidity(data.main.humidity);
-        setWind(Math.round(data.wind.speed));
-        setSky(data.weather[0].description);
-
-        const iconUrl = getIcon(icon, data);
-        if (iconUrl !== undefined) {
-          setIcon(iconUrl);
-        }
-
-        contextData?.setCity(data.name);
-
-      } catch (err) {
-        console.log(err)
-        if (!(err instanceof AxiosError)) {
-          return;
-        } if (err.response && err.response.status === 401) {
-          return;
-        }
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setLocation({lon: longitude, lat: latitude});
+        contextData?.getData({lon: longitude, lat: latitude});
+      },
+      error => {
+        contextData?.getData({lon: 48.8566, lat: 2.3522});
+        console.error(`Ошибка: ${error.message}`);
       }
-    } 
-    fetchWeatherData();
-  }, [latitude, longitude, contextData]);
+    );
+  }, [])
+
+  useEffect(() => {
+    const data = contextData?.currentData;
+
+    if (data) {
+      const icon = map[data.weather[0].main as keyof mapType];
+
+      const roundedTemp = Math.round(data.main.temp);
+      setTemp(roundedTemp);
+      setName(data.name);
+      setHumidity(data.main.humidity);
+      setWind(Math.round(data.wind.speed));
+      setSky(data.weather[0].description);
+  
+      const iconUrl = getIcon(icon, data);
+      if (iconUrl !== undefined) {
+        setIcon(iconUrl);
+      }
+    }
+  
+  }, [location, contextData]);
 
   return (
     <>

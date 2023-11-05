@@ -1,5 +1,4 @@
-import React, { PropsWithChildren } from 'react';
-import '../App.css';
+import { PropsWithChildren } from 'react';
 
 const Header = ({ children }: PropsWithChildren) => {
 
