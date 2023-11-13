@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
-import axios, { AxiosError } from 'axios';
+import React, { useState, useContext } from 'react';
 import { ForecastContext } from '../contexts/index';
 
 const Search = () => {

@@ -30,6 +30,15 @@ const map: mapType = {
     D: `${process.env.PUBLIC_URL}/day/clear-day.svg`,
     N: `${process.env.PUBLIC_URL}/day/clear-night.svg`,
   },
+  Mist: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
+  Smoke: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
+  Haze: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
+  Dust: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
+  Fog: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
+  Sand: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
+  Ash: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
+  Squall: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
+  Tornado: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
 }
 
 export default map;

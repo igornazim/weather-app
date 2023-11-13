@@ -27,6 +27,8 @@ body {
   margin-bottom: 24px;
 }
 
+
+
 .left-column {
   display: flex;
   flex-wrap: wrap;
@@ -37,12 +39,19 @@ body {
   border-right: 1px solid #fff;
 }
 
+@media (max-width: 770px) {
+  .left-column {
+    margin: 0 0 0 10px;
+  }
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
 
 .geo {
+  width: 400px;
   display: flex;
   flex-wrap: nowrap;
   align-items: baseline;
@@ -55,7 +64,7 @@ body {
 }
 
 .temp-container {
-  width: 240px;
+  width: 400px;
   height: 320px;
   display: flex;
   flex-wrap: wrap;
@@ -76,6 +85,7 @@ body {
 }
 
 .temp-group {
+  width: 400px;
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
