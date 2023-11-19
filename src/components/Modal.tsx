@@ -14,7 +14,7 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 320,
-  bgcolor: 'rgba(255, 255, 255, 0.2)',
+  bgcolor: '#7498F3',
   border: '2px solid #fff',
   boxShadow: 24,
   p: 4,
@@ -52,7 +52,7 @@ const modalButtonStyle = {
 }
 
 const textFieldClasses = {
-  "& .MuiInputLabel-root": {color: '#fff'},//styles the label
+  "& .MuiInputLabel-root": {color: '#fff'},
   "& .MuiOutlinedInput-root": {
     "& > fieldset": { border: '1px solid #fff', },
   },

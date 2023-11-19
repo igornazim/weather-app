@@ -7,10 +7,17 @@ export type geoData = {
   city?: string | null;
 }
 
+type sunTime = {
+  sunrise: number;
+  sunset: number;
+}
+
 type ForecastContextType = {
   geo: geoData;
   currentData: IWeatherData | null;
   getData: (newData: geoData) => void,
+  sunTime: sunTime | null,
+  setTime: (newTime: sunTime) => void,
 }
 
 const ForecastContext = createContext<ForecastContextType | null>(null);

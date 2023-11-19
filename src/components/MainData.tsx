@@ -85,6 +85,7 @@ const MainData = () => {
 
   useEffect(() => {
     const data = contextData?.currentData;
+    console.log(data)
 
     if (data) {
       const icon = map[data.weather[0].main as keyof mapType];
@@ -95,6 +96,7 @@ const MainData = () => {
       setHumidity(data.main.humidity);
       setWind(Math.round(data.wind.speed));
       setSky(data.weather[0].description);
+      contextData?.setTime({sunrise: data.sys.sunrise, sunset: data.sys.sunset});
   
       const iconUrl = getIcon(icon, data);
       if (iconUrl !== undefined) {
@@ -102,7 +104,7 @@ const MainData = () => {
       }
     }
   
-  }, [location, contextData]);
+  }, [location, contextData?.geo, contextData?.currentData]);
 
   return (
     <>

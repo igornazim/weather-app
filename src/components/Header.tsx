@@ -1,5 +1,4 @@
-import { PropsWithChildren } from 'react';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import TransitionsModal from './Modal';
 
 const Header = ({ children }: PropsWithChildren) => {
@@ -9,9 +8,11 @@ const Header = ({ children }: PropsWithChildren) => {
 
   return (
     <div className="header">
-      <p>Weather App</p>
-      {children}
-      <TransitionsModal open={open} handleOpen={handleOpen} handleClose={handleClose} />
+      <div className="headercontainer">
+        <p>Weather App</p>
+        {children}
+        <TransitionsModal open={open} handleOpen={handleOpen} handleClose={handleClose} />
+      </div>
     </div>
   );
 }
