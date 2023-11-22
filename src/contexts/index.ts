@@ -18,6 +18,8 @@ type ForecastContextType = {
   getData: (newData: geoData) => void,
   sunTime: sunTime | null,
   setTime: (newTime: sunTime) => void,
+  tempMetric: string,
+  setMetric: (tempMetric: string) => void,
 }
 
 const ForecastContext = createContext<ForecastContextType | null>(null);

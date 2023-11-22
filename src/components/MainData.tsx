@@ -85,7 +85,6 @@ const MainData = () => {
 
   useEffect(() => {
     const data = contextData?.currentData;
-    console.log(data)
 
     if (data) {
       const icon = map[data.weather[0].main as keyof mapType];
@@ -94,7 +93,8 @@ const MainData = () => {
       setTemp(roundedTemp);
       setName(data.name);
       setHumidity(data.main.humidity);
-      setWind(Math.round(data.wind.speed));
+      const mphToMetersPerSecond = contextData?.tempMetric === 'C' ? data.wind.speed : data.wind.speed * 0.44704;
+      setWind(Math.round(mphToMetersPerSecond));
       setSky(data.weather[0].description);
       contextData?.setTime({sunrise: data.sys.sunrise, sunset: data.sys.sunset});
   
@@ -120,7 +120,7 @@ const MainData = () => {
           <p className="temp">
             {temp}
           </p>
-          <sup>°C</sup>
+          <sup>{contextData?.tempMetric === 'C' ? '°C' : '°F'}</sup>
         </div>
         <div className="skyState">
           <img className="weatherIcon" src={currentIcon} alt='cloudy' />

@@ -33,7 +33,7 @@ const openModalButtonStyle = {
   border: '1px solid #fff',
   borderRadius: '10px',
   '&:hover': {
-    bgcolor: 'rgba(255, 255, 255, 0.1)',
+    bgcolor: 'rgba(255, 255, 255, 0.2)',
     borderColor: '#fff',
     color: '#fff',
     border: '1px solid #fff',
@@ -45,7 +45,7 @@ const modalButtonStyle = {
   borderColor: '#fff',
   color: '#fff',
   '&:hover': {
-    bgcolor: 'rgba(255, 255, 255, 0.1)',
+    bgcolor: 'rgba(255, 255, 255, 0.2)',
     borderColor: '#fff',
     color: '#fff',
   },

@@ -59,11 +59,12 @@ const getIcon = (currentIcon: string, weatherData: IweatherPerDay) => {
 const Cards = () => {
   const contextData = useContext(ForecastContext);
   const [data, setData] = useState<IweatherPerDay[]>()
+  const tempQueryParam = contextData?.tempMetric === 'C' ? 'metric' : 'imperial';
 
   useEffect(()=> {
     const fetchWeatherData = async () => {
       try {
-        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${contextData?.currentData?.name}&appid=ada1ba65089546899569c283f09d47fb&units=metric&timezone=7200`);
+        const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${contextData?.currentData?.name}&appid=ada1ba65089546899569c283f09d47fb&units=${tempQueryParam}&timezone=7200`);
         const filteredData = data.list.filter((weatherPerDay: IweatherPerDay) => weatherPerDay.dt_txt.includes('12:00:00'));
         setData(filteredData);
       } catch (err) {
