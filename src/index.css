@@ -73,7 +73,7 @@ body {
 .left-column {
   display: flex;
   flex-wrap: wrap;
-  flex: 0 1 720px;
+  flex: 0 1 680px;
   justify-content: flex-start;
   width: 60%;
   margin: 0 0 0 40px;
