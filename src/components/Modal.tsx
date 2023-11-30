@@ -38,7 +38,7 @@ const openModalButtonStyle = {
     color: '#fff',
     border: '1px solid #fff',
   },
-}
+};
 
 const modalButtonStyle = {
   height: '56px',
@@ -49,21 +49,21 @@ const modalButtonStyle = {
     borderColor: '#fff',
     color: '#fff',
   },
-}
+};
 
 const textFieldClasses = {
-  "& .MuiInputLabel-root": {color: '#fff'},
-  "& .MuiOutlinedInput-root": {
-    "& > fieldset": { border: '1px solid #fff', },
+  '& .MuiInputLabel-root': { color: '#fff' },
+  '& .MuiOutlinedInput-root': {
+    '& > fieldset': { border: '1px solid #fff' },
   },
-  "& .MuiInputLabel-root.Mui-focused": {color: '#fff'},
-  "& .MuiOutlinedInput-root.Mui-focused": {
-    "& > fieldset": { border: '1px solid #fff', }
+  '& .MuiInputLabel-root.Mui-focused': { color: '#fff' },
+  '& .MuiOutlinedInput-root.Mui-focused': {
+    '& > fieldset': { border: '1px solid #fff' },
   },
-  "& .MuiOutlinedInput-root:hover": {
-    "& > fieldset": { border: '1px solid #fff', },
-  }
-}
+  '& .MuiOutlinedInput-root:hover': {
+    '& > fieldset': { border: '1px solid #fff' },
+  },
+};
 
 interface TransitionsModalProps {
   open: boolean;
@@ -81,7 +81,7 @@ const TransitionsModal: React.FC<TransitionsModalProps> = ({ open, handleOpen, h
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    contextData?.getData({city});
+    contextData?.getData({ city });
     setCity('');
     handleClose();
   };
@@ -109,7 +109,7 @@ const TransitionsModal: React.FC<TransitionsModalProps> = ({ open, handleOpen, h
         <Fade in={open}>
           <Box sx={modalStyle}>
             <Typography
-              sx={{mb: 2, color: '#fff'}}
+              sx={{ mb: 2, color: '#fff' }}
               id="transition-modal-title"
               variant="h6"
               component="h2"
@@ -137,6 +137,6 @@ const TransitionsModal: React.FC<TransitionsModalProps> = ({ open, handleOpen, h
       </Modal>
     </div>
   );
-}
+};
 
 export default TransitionsModal;

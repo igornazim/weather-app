@@ -38,6 +38,6 @@ const Suntime = () => {
       </div>
     </>
   );
-}
+};
 
 export default Suntime;

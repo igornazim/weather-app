@@ -7,6 +7,6 @@ const Footer = () => {
       <p>Created by Igor Nazim</p>
     </div>
   );
-}
+};
 
 export default Footer;

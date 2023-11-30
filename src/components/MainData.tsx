@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
 
 import map from '../getWeatherIcon';
-import { mapType } from '../getWeatherIcon';
-import { mainweatherData } from '../components/Cards';
+import { MapType, DayOrNight } from '../getWeatherIcon';
+import { MainweatherData } from '../components/Cards';
 import { ForecastContext } from '../contexts/index';
 
 export type Weather = {
@@ -10,7 +10,7 @@ export type Weather = {
   icon: string;
   id: number;
   main: string;
-}
+};
 
 export interface IWeatherData {
   base: string;
@@ -24,7 +24,7 @@ export interface IWeatherData {
   };
   dt: number;
   id: number;
-  main: mainweatherData;
+  main: MainweatherData;
   name: string;
   sys: {
     country: string;
@@ -41,9 +41,9 @@ export interface IWeatherData {
   };
 }
 
-const getIcon = (currentIcon: string, weatherData: IWeatherData) => {
-  const dayIcon = typeof currentIcon === 'string' ? currentIcon : currentIcon['D'];
-  const nightIcon = typeof currentIcon === 'string' ? currentIcon : currentIcon['N'];
+const getIcon = (currentIcon: string | DayOrNight, weatherData: IWeatherData) => {
+  const dayIcon = typeof currentIcon === 'string' ? currentIcon : currentIcon.D;
+  const nightIcon = typeof currentIcon === 'string' ? currentIcon : currentIcon.N;
   if (weatherData.weather[0].icon.includes('d')) {
     return typeof currentIcon === 'string' ? currentIcon : dayIcon;
   } if (weatherData.weather[0].icon.includes('n')) {
@@ -60,10 +60,10 @@ const MainData = () => {
   const [wind, setWind] = useState(0);
   const [skyState, setSky] = useState('');
   const [currentIcon, setIcon] = useState('');
-  const [location, setLocation] = useState({lon: 48.8566, lat: 2.3522});
+  const [location, setLocation] = useState({ lon: 48.8566, lat: 2.3522 });
 
   const today = new Date();
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const day = today.getDate();
   const monthIndex = today.getMonth();
   const year = today.getFullYear();
@@ -73,21 +73,21 @@ const MainData = () => {
     navigator.geolocation.getCurrentPosition(
       position => {
         const { latitude, longitude } = position.coords;
-        setLocation({lon: longitude, lat: latitude});
-        contextData?.getData({lon: longitude, lat: latitude});
+        setLocation({ lon: longitude, lat: latitude });
+        contextData?.getData({ lon: longitude, lat: latitude });
       },
       error => {
-        contextData?.getData({lon: 48.8566, lat: 2.3522});
+        contextData?.getData({ lon: 48.8566, lat: 2.3522 });
         console.error(`Ошибка: ${error.message}`);
-      }
+      },
     );
-  }, [])
+  }, []);
 
   useEffect(() => {
     const data = contextData?.currentData;
 
     if (data) {
-      const icon = map[data.weather[0].main as keyof mapType];
+      const icon = map[data.weather[0].main as keyof MapType];
 
       const roundedTemp = Math.round(data.main.temp);
       setTemp(roundedTemp);
@@ -96,7 +96,7 @@ const MainData = () => {
       const mphToMetersPerSecond = contextData?.tempMetric === 'C' ? data.wind.speed : data.wind.speed * 0.44704;
       setWind(Math.round(mphToMetersPerSecond));
       setSky(data.weather[0].description);
-      contextData?.setTime({sunrise: data.sys.sunrise, sunset: data.sys.sunset});
+      contextData?.setTime({ sunrise: data.sys.sunrise, sunset: data.sys.sunset });
   
       const iconUrl = getIcon(icon, data);
       if (iconUrl !== undefined) {
@@ -140,6 +140,6 @@ const MainData = () => {
     </>
   );
   
-}
+};
 
 export default MainData;

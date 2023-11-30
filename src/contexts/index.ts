@@ -1,26 +1,26 @@
 import { createContext } from 'react';
 import { IWeatherData } from '../components/MainData';
 
-export type geoData = {
-  lon?: number | null;
-  lat?: number | null;
-  city?: string | null;
-}
+export type GeoData = {
+  lon?: number;
+  lat?: number;
+  city?: string;
+};
 
-type sunTime = {
+type SunTime = {
   sunrise: number;
   sunset: number;
-}
+};
 
 type ForecastContextType = {
-  geo: geoData;
+  geo: GeoData;
   currentData: IWeatherData | null;
-  getData: (newData: geoData) => void,
-  sunTime: sunTime | null,
-  setTime: (newTime: sunTime) => void,
+  getData: (newData: GeoData) => void,
+  sunTime: SunTime | null,
+  setTime: (newTime: SunTime) => void,
   tempMetric: string,
   setMetric: (tempMetric: string) => void,
-}
+};
 
 const ForecastContext = createContext<ForecastContextType | null>(null);
 

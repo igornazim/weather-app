@@ -1,26 +1,31 @@
-type dynamicKeysObject = {
-  [key in 'Mist' | 'Smoke' | 'Haze' | 'Dust' | 'Fog' | 'Sand' | 'Dust' | 'Ash' | 'Squall' | 'Tornado']: string;
+export type DayOrNight = {
+  D: string;
+  N: string;
 };
 
-export type mapType = {
+export type MapType = {
   Clouds: string;
   Thunderstorm: string;
   Drizzle: string;
-  Rain: {
-    D: string;
-    N: string;
-  };
+  Rain: DayOrNight,
   Snow: string;
-  Clear: {
-    D: string;
-    N: string;
-  };
-} | dynamicKeysObject;
+  Clear: DayOrNight,
+  Mist: string;
+  Smoke: string;
+  Haze: string;
+  Dust: string;
+  Fog: string;
+  Sand: string;
+  Ash: string;
+  Squall: string;
+  Tornado: string;
+};
 
-const map: mapType = {
+
+const map: MapType = {
   Clouds: `${process.env.PUBLIC_URL}/day/clouds.svg`,
   Thunderstorm: `${process.env.PUBLIC_URL}/day/thunderstorm.svg`,
-  Drizzle: `${process.env.PUBLIC_URL}/day/drizzle".svg`,
+  Drizzle: `${process.env.PUBLIC_URL}/day/drizzle.svg`,
   Rain: {
     D: `${process.env.PUBLIC_URL}/day/rain-day.svg`,
     N: `${process.env.PUBLIC_URL}/day/rain-night.svg`,
@@ -39,6 +44,6 @@ const map: mapType = {
   Ash: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
   Squall: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
   Tornado: `${process.env.PUBLIC_URL}/day/atmosphere.svg`,
-}
+};
 
 export default map;

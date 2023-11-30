@@ -6,13 +6,16 @@ extends:
   - 'eslint:recommended'
   - 'plugin:@typescript-eslint/eslint-recommended'
   - 'plugin:@typescript-eslint/recommended'
+  - 'airbnb-typescript'
 parserOptions:
   ecmaFeatures:
     jsx: true
   ecmaVersion: latest
   sourceType: module
+  project: './tsconfig.json'
 plugins:
   - react
+  - import
 rules:
   import/extensions: 0
   react/prop-types: 0

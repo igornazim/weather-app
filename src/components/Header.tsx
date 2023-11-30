@@ -14,7 +14,7 @@ const btnStyles = {
     color: '#fff',
     bgcolor: 'rgba(255, 255, 255, 0.2)',
   },
-}
+};
 
 const ColorToggleButton = () => {
   const contextData = useContext(ForecastContext);
@@ -49,7 +49,7 @@ const ColorToggleButton = () => {
       </ToggleButton>
     </ToggleButtonGroup>
   );
-}
+};
 
 const Header = ({ children }: PropsWithChildren) => {
   const [open, setOpen] = React.useState(false);
@@ -66,6 +66,6 @@ const Header = ({ children }: PropsWithChildren) => {
       </div>
     </div>
   );
-}
+};
 
 export default Header;
