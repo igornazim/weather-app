@@ -88,7 +88,7 @@ const Cards = () => {
       }
     }; 
     fetchWeatherData();
-  }, [contextData]);
+  }, [contextData, url]);
 
   return (
     <div className="cards">
