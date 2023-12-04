@@ -88,7 +88,6 @@ const MainData = () => {
       const icon = map[data.weather[0].main as keyof MapType];
 
       const roundedTemp = Math.round(data.main.temp);
-      console.log(name);
       setTemp(roundedTemp);
       setName(data.name);
       setHumidity(data.main.humidity);
