@@ -7,13 +7,13 @@ interface ICardProps {
   icon: string;
 }
 
-const Card: React.FC<ICardProps> = (props) => {
+const Card = (props: ICardProps) => {
   const contextData = useContext(ForecastContext);
 
   return (
     <div className="card">
       <p>
-        {Math.round(props.temp)}{contextData?.tempMetric === 'C' ? '°C' : '°F'}
+        {Math.round(props.temp)}{contextData?.temperatureUnits === 'C' ? '°C' : '°F'}
       </p>
       <img className="weatherIcon" src={props.icon} alt='cloudy' />
       <p>

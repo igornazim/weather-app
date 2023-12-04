@@ -59,23 +59,23 @@ const getIcon = (currentIcon: string | DayOrNight, weatherData: IweatherPerDay) 
 const Cards = () => {
   const contextData = useContext(ForecastContext);
   const [currentData, setData] = useState<IweatherPerDay[]>();
-  const tempQueryParam = contextData?.tempMetric === 'C' ? 'metric' : 'imperial';
-
-  const apiUrl = new URL('https://api.openweathermap.org/data/2.5/forecast');
-  apiUrl.searchParams.append('appid', 'ada1ba65089546899569c283f09d47fb');
-  apiUrl.searchParams.append('units', tempQueryParam);
-  apiUrl.searchParams.append('timezone', '7200');
-
-  if (contextData?.currentData?.name) {
-    apiUrl.searchParams.append('q', contextData.currentData.name);
-  }
-
-  const url = apiUrl.toString();
+  const tempQueryParam = contextData?.temperatureUnits === 'C' ? 'metric' : 'imperial';
 
   useEffect(()=> {
     const fetchWeatherData = async () => {
       try {
+        const apiUrl = new URL('https://api.openweathermap.org/data/2.5/forecast');
+        apiUrl.searchParams.append('appid', 'ada1ba65089546899569c283f09d47fb');
+        apiUrl.searchParams.append('units', tempQueryParam);
+        apiUrl.searchParams.append('timezone', '7200');
+      
+        if (contextData?.currentWeatherData?.name) {
+          apiUrl.searchParams.append('q', contextData.currentWeatherData.name);
+        }
+      
+        const url = apiUrl.toString();
         const { data } = await axios.get(url);
+        console.log(data);
         const filteredData = data.list.filter((weatherPerDay: IweatherPerDay) => weatherPerDay.dt_txt.includes('12:00:00'));
         setData(filteredData);
       } catch (err) {
@@ -88,7 +88,7 @@ const Cards = () => {
       }
     }; 
     fetchWeatherData();
-  }, [contextData, url]);
+  }, [contextData]);
 
   return (
     <div className="cards">

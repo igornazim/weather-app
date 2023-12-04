@@ -81,7 +81,7 @@ const TransitionsModal: React.FC<TransitionsModalProps> = ({ open, handleOpen, h
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    contextData?.getData({ city });
+    contextData?.setLocation({ city });
     setCity('');
     handleClose();
   };

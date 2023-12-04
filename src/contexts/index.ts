@@ -14,11 +14,11 @@ type SunTime = {
 
 type ForecastContextType = {
   geo: GeoData;
-  currentData: IWeatherData | null;
-  getData: (newData: GeoData) => void,
+  currentWeatherData: IWeatherData | null;
+  setLocation: (newLocation: GeoData) => void,
   sunTime: SunTime | null,
   setTime: (newTime: SunTime) => void,
-  tempMetric: string,
+  temperatureUnits: string,
   setMetric: (tempMetric: string) => void,
 };
 

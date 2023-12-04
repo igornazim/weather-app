@@ -60,40 +60,39 @@ const MainData = () => {
   const [wind, setWind] = useState(0);
   const [skyState, setSky] = useState('');
   const [currentIcon, setIcon] = useState('');
-  const [location, setLocation] = useState({ lon: 48.8566, lat: 2.3522 });
 
   const today = new Date();
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const day = today.getDate();
-  const monthIndex = today.getMonth();
-  const year = today.getFullYear();
-  const formattedDate = `${day} ${months[monthIndex]} ${year}`;
+  const formattedDate = today.toLocaleDateString('en-UK', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       position => {
         const { latitude, longitude } = position.coords;
-        setLocation({ lon: longitude, lat: latitude });
-        contextData?.getData({ lon: longitude, lat: latitude });
+        contextData?.setLocation({ lon: longitude, lat: latitude });
       },
       error => {
-        contextData?.getData({ lon: 48.8566, lat: 2.3522 });
+        contextData?.setLocation({ city: 'paris' });
         console.error(`Ошибка: ${error.message}`);
       },
     );
   }, []);
 
   useEffect(() => {
-    const data = contextData?.currentData;
+    const data = contextData?.currentWeatherData;
 
     if (data) {
       const icon = map[data.weather[0].main as keyof MapType];
 
       const roundedTemp = Math.round(data.main.temp);
+      console.log(name);
       setTemp(roundedTemp);
       setName(data.name);
       setHumidity(data.main.humidity);
-      const mphToMetersPerSecond = contextData?.tempMetric === 'C' ? data.wind.speed : data.wind.speed * 0.44704;
+      const mphToMetersPerSecond = contextData?.temperatureUnits === 'C' ? data.wind.speed : data.wind.speed * 0.44704;
       setWind(Math.round(mphToMetersPerSecond));
       setSky(data.weather[0].description);
       contextData?.setTime({ sunrise: data.sys.sunrise, sunset: data.sys.sunset });
@@ -104,7 +103,7 @@ const MainData = () => {
       }
     }
   
-  }, [location, contextData?.geo, contextData?.currentData]);
+  }, [location, contextData?.geo, contextData?.currentWeatherData]);
 
   return (
     <>
@@ -120,7 +119,7 @@ const MainData = () => {
           <p className="temp">
             {temp}
           </p>
-          <sup>{contextData?.tempMetric === 'C' ? '°C' : '°F'}</sup>
+          <sup>{contextData?.temperatureUnits === 'C' ? '°C' : '°F'}</sup>
         </div>
         <div className="skyState">
           <img className="weatherIcon" src={currentIcon} alt='cloudy' />

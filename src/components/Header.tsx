@@ -18,21 +18,11 @@ const btnStyles = {
 
 const ColorToggleButton = () => {
   const contextData = useContext(ForecastContext);
-  const [alignment, setAlignment] = React.useState('web');
-
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
-  ) => {
-    setAlignment(newAlignment);
-  };
 
   return (
     <ToggleButtonGroup
       color="primary"
-      value={alignment}
       exclusive
-      onChange={handleChange}
       aria-label="Platform"
     >
       <ToggleButton

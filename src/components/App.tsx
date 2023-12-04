@@ -8,30 +8,29 @@ import { ForecastContext } from '../contexts/index';
 import axios, { AxiosError } from 'axios';
 import { GeoData } from '../contexts/index';
 
-const CityProvider = ({ children }: React.PropsWithChildren) => {
-  const [geo, getData] = useState<GeoData>({ city: 'paris', lon: 48.8566, lat: 2.3522 });
-  const [currentData, setData] = useState(null);
+const WeatherProvider = ({ children }: React.PropsWithChildren) => {
+  const [geo, setLocation] = useState<GeoData>({ city: 'paris', lon: 48.8566, lat: 2.3522 });
+  const [currentWeatherData, setData] = useState(null);
   const [sunTime, setTime] = useState({ sunrise: 1700283090, sunset: 1700315928 });
-  const [tempMetric, setMetric] = useState('C');
-  const tempQueryParam = tempMetric === 'C' ? 'metric' : 'imperial';
-
-  const apiUrl = new URL('https://api.openweathermap.org/data/2.5/weather');
-  apiUrl.searchParams.append('appid', 'ada1ba65089546899569c283f09d47fb');
-  apiUrl.searchParams.append('units', tempQueryParam);
-  apiUrl.searchParams.append('timezone', '7200');
-
-  if (geo.city) {
-    apiUrl.searchParams.append('q', geo.city);
-  } else if (geo.lat !== undefined && geo.lon !== undefined) {
-    apiUrl.searchParams.append('lat', geo.lat.toString());
-    apiUrl.searchParams.append('lon', geo.lon.toString());
-  }
-
-  const url = apiUrl.toString();
+  const [temperatureUnits, setMetric] = useState('C');
+  const temperatureQueryParam = temperatureUnits === 'C' ? 'metric' : 'imperial';
 
   useEffect(()=> {
     const fetchWeatherData = async () => {
       try {
+        const apiUrl = new URL('https://api.openweathermap.org/data/2.5/weather');
+        apiUrl.searchParams.append('appid', 'ada1ba65089546899569c283f09d47fb');
+        apiUrl.searchParams.append('units', temperatureQueryParam);
+        apiUrl.searchParams.append('timezone', '7200');
+      
+        if (geo.city) {
+          apiUrl.searchParams.append('q', geo.city);
+        } else if (geo.lat !== undefined && geo.lon !== undefined) {
+          apiUrl.searchParams.append('lat', geo.lat.toString());
+          apiUrl.searchParams.append('lon', geo.lon.toString());
+        }
+      
+        const url = apiUrl.toString();
         const { data } = await axios.get(url);
         setData(data);
       } catch (err) {
@@ -44,7 +43,7 @@ const CityProvider = ({ children }: React.PropsWithChildren) => {
       }
     }; 
     fetchWeatherData();
-  }, [geo, tempMetric, url]);
+  }, [geo]);
 
 
   return (
@@ -52,11 +51,11 @@ const CityProvider = ({ children }: React.PropsWithChildren) => {
       value=
         {{
           geo,
-          currentData,
-          getData,
+          currentWeatherData,
+          setLocation,
           sunTime,
           setTime,
-          tempMetric,
+          temperatureUnits,
           setMetric,
         }}
     >
@@ -68,7 +67,7 @@ const CityProvider = ({ children }: React.PropsWithChildren) => {
 const App = () => {
 
   return (
-    <CityProvider>
+    <WeatherProvider>
       <div className="app">
         <Header />
         <div className="main">
@@ -82,7 +81,7 @@ const App = () => {
         </div>
         <Footer />
       </div>
-    </CityProvider>
+    </WeatherProvider>
   );
 };
 
