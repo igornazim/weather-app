@@ -7,18 +7,48 @@ export type GeoData = {
   city?: string;
 };
 
-type SunTime = {
-  sunrise: number;
-  sunset: number;
+type IconData = {
+  'id': 500,
+  'main': 'Rain',
+  'description': 'light rain',
+  'icon': '10n'
 };
+
+export type MainweatherData = {
+  feels_like: number;
+  grnd_level: number;
+  humidity: number;
+  pressure: number;
+  sea_level: number;
+  temp: number;
+  temp_kf: number;
+  temp_max: number;
+  temp_min: number;
+};
+
+export interface IweatherPerDay {
+  clouds: { all: number };
+  dt: number;
+  dt_txt: string;
+  main: MainweatherData
+  pop: number;
+  rain: {
+    '3h': number;
+  };
+  sys: {
+    pod: string;
+  }
+  visibility: number;
+  weather: IconData[];
+  wind: { speed: number, deg: number, gust: number };
+}
 
 type ForecastContextType = {
   geo: GeoData;
-  currentWeatherData: IWeatherData | null;
-  setLocation: (newLocation: GeoData) => void,
-  sunTime: SunTime | null,
-  setTime: (newTime: SunTime) => void,
+  currentWeatherData: IWeatherData | null,
+  forecastData: IweatherPerDay[],
   temperatureUnits: string,
+  setLocation: (newLocation: GeoData) => void,
   setMetric: (tempMetric: string) => void,
 };
 

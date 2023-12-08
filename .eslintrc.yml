@@ -3,9 +3,8 @@ env:
   browser: true
   es2021: true
 extends:
-  - 'eslint:recommended'
-  - 'plugin:@typescript-eslint/eslint-recommended'
-  - 'plugin:@typescript-eslint/recommended'
+  - 'airbnb'
+  - 'airbnb/hooks'
   - 'airbnb-typescript'
 parserOptions:
   ecmaFeatures:
@@ -28,3 +27,4 @@ rules:
   functional/functional-parameters: 0
   no-multi-spaces: 'error'
   react/function-component-definition: [2, { "namedComponents": "arrow-function" }]
+  import/no-cycle: off

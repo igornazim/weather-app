@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { ForecastContext } from '../contexts/index';
 
 interface ICardProps {
@@ -9,15 +9,17 @@ interface ICardProps {
 
 const Card = (props: ICardProps) => {
   const contextData = useContext(ForecastContext);
+  const { temp, icon, day } = props;
 
   return (
     <div className="card">
       <p>
-        {Math.round(props.temp)}{contextData?.temperatureUnits === 'C' ? '°C' : '°F'}
+        {Math.round(temp)}
+        {contextData?.temperatureUnits === 'C' ? '°C' : '°F'}
       </p>
-      <img className="weatherIcon" src={props.icon} alt='cloudy' />
+      <img className="weatherIcon" src={icon} alt="cloudy" />
       <p>
-        {props.day}
+        {day}
       </p>
     </div>
   );

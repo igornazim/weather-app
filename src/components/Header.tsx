@@ -1,7 +1,6 @@
 import React, { useContext, PropsWithChildren } from 'react';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import TransitionsModal from './Modal';
-import { ToggleButton } from '@mui/material';
-import { ToggleButtonGroup } from '@mui/material';
 import { ForecastContext } from '../contexts/index';
 
 const btnStyles = {
@@ -28,13 +27,15 @@ const ColorToggleButton = () => {
       <ToggleButton
         onClick={() => contextData?.setMetric('C')}
         sx={btnStyles}
-        value="C">
+        value="C"
+      >
         C
       </ToggleButton>
       <ToggleButton
         onClick={() => contextData?.setMetric('F')}
         sx={btnStyles}
-        value="F">
+        value="F"
+      >
         F
       </ToggleButton>
     </ToggleButtonGroup>

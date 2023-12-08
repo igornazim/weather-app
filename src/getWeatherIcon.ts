@@ -21,7 +21,6 @@ export type MapType = {
   Tornado: string;
 };
 
-
 const map: MapType = {
   Clouds: `${process.env.PUBLIC_URL}/day/clouds.svg`,
   Thunderstorm: `${process.env.PUBLIC_URL}/day/thunderstorm.svg`,

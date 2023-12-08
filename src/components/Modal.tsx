@@ -1,12 +1,8 @@
 import React, { useState, useContext } from 'react';
+import {
+  Backdrop, Box, Modal, Fade, Button, Typography, TextField,
+} from '@mui/material';
 import { ForecastContext } from '../contexts/index';
-import { Backdrop } from '@mui/material';
-import { Box } from '@mui/material';
-import { Modal } from '@mui/material';
-import { Fade } from '@mui/material';
-import { Button } from '@mui/material';
-import { Typography } from '@mui/material';
-import { TextField } from '@mui/material';
 
 const modalStyle = {
   position: 'absolute' as const,
@@ -90,7 +86,8 @@ const TransitionsModal: React.FC<TransitionsModalProps> = ({ open, handleOpen, h
     <div>
       <Button
         sx={openModalButtonStyle}
-        onClick={handleOpen}>
+        onClick={handleOpen}
+      >
         Search
       </Button>
       <Modal
@@ -120,7 +117,7 @@ const TransitionsModal: React.FC<TransitionsModalProps> = ({ open, handleOpen, h
               <TextField
                 value={city}
                 onChange={handleCityChange}
-                sx={ textFieldClasses }
+                sx={textFieldClasses}
                 id="outlined-basic"
                 label="City"
                 variant="outlined"
@@ -128,7 +125,8 @@ const TransitionsModal: React.FC<TransitionsModalProps> = ({ open, handleOpen, h
               <Button
                 sx={modalButtonStyle}
                 type="submit"
-                variant="outlined">
+                variant="outlined"
+              >
                 Ok
               </Button>
             </form>
