@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+/* eslint-disable indent */
+import { useReducer, useEffect, useMemo } from 'react';
 import axios, { AxiosError } from 'axios';
 import Cards from './Cards';
 import Header from './Header';
@@ -7,21 +8,57 @@ import Suntime from './Suntime';
 import Footer from './Footer';
 import { ForecastContext, GeoData, IweatherPerDay } from '../contexts/index';
 
+interface IFullWeatherData {
+  geo: { city: string, lon: number, lat: number },
+  currentWeatherData: null,
+  forecastData: null,
+  temperatureUnits: string,
+}
+
+const actions = {
+  set_geo: 'set_geo',
+  set_weather_data: 'set_weather_data',
+  set_forecast_data: 'set_forecast_data',
+  set_metric: 'set_metric',
+};
+
+const weatherReducer = (state: IFullWeatherData, action: any) => {
+  switch (action.type) {
+    case actions.set_geo:
+      return { ...state, geo: action.payload };
+    case actions.set_weather_data:
+      return { ...state, currentWeatherData: action.payload };
+    case actions.set_forecast_data:
+      return { ...state, forecastData: action.payload };
+    case actions.set_metric:
+      return { ...state, temperatureUnits: action.payload };
+    default:
+      return state;
+  }
+};
+
 const WeatherProvider = ({ children }: React.PropsWithChildren) => {
-  const [geo, setLocation] = useState<GeoData>({ city: 'paris', lon: 48.8566, lat: 2.3522 });
-  const [currentWeatherData, setWeatheerData] = useState(null);
-  const [forecastData, setForecastData] = useState([]);
-  const [temperatureUnits, setMetric] = useState('C');
+  const initialState = {
+    geo: { city: 'paris', lon: 48.8566, lat: 2.3522 },
+    currentWeatherData: null,
+    forecastData: [],
+    temperatureUnits: 'C',
+  };
+  const [state, dispatch] = useReducer(weatherReducer, initialState);
+  const {
+    geo, currentWeatherData, forecastData, temperatureUnits,
+  } = state;
+
   const temperatureQueryParam = temperatureUnits === 'C' ? 'metric' : 'imperial';
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        setLocation({ lon: longitude, lat: latitude });
+        dispatch({ type: actions.set_geo, payload: { lon: longitude, lat: latitude } });
       },
       (error) => {
-        setLocation({ city: 'paris' });
+        dispatch({ type: actions.set_geo, payload: { city: 'paris' } });
         console.error(`Ошибка: ${error.message}`);
       },
     );
@@ -44,7 +81,7 @@ const WeatherProvider = ({ children }: React.PropsWithChildren) => {
 
         const url = apiUrl.toString();
         const { data } = await axios.get(url);
-        setWeatheerData(data);
+        dispatch({ type: actions.set_weather_data, payload: data });
       } catch (err) {
         console.log(err);
         if (!(err instanceof AxiosError)) {
@@ -76,7 +113,7 @@ const WeatherProvider = ({ children }: React.PropsWithChildren) => {
         const url = apiUrl.toString();
         const { data } = await axios.get(url);
         const filteredData = data.list.filter((weatherPerDay: IweatherPerDay) => weatherPerDay.dt_txt.includes('12:00:00'));
-        setForecastData(filteredData);
+        dispatch({ type: actions.set_forecast_data, payload: filteredData });
       } catch (err) {
         console.log(err);
         if (!(err instanceof AxiosError)) {
@@ -94,10 +131,10 @@ const WeatherProvider = ({ children }: React.PropsWithChildren) => {
     geo,
     currentWeatherData,
     forecastData,
-    setLocation,
     temperatureUnits,
-    setMetric,
-  }), [geo, currentWeatherData, setLocation, temperatureUnits, setMetric, forecastData]);
+    setLocation: (newGeo: GeoData) => dispatch({ type: actions.set_geo, payload: newGeo }),
+    setMetric: (tempMetric: string) => dispatch({ type: actions.set_metric, payload: tempMetric }),
+  }), [geo, currentWeatherData, temperatureUnits, forecastData]);
 
   return (
     <ForecastContext.Provider value={contextValue}>
