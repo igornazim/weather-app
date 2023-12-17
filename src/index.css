@@ -51,7 +51,7 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 1280px;
-  padding: 0 20px 0 20px;
+  padding: 0 10px 0 10px;
 }
 
 @media (max-width: 770px) {

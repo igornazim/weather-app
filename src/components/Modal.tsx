@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import {
   Backdrop, Box, Modal, Fade, Button, Typography, TextField,
 } from '@mui/material';
-import { ForecastContext } from '../contexts/index';
+import useForecast from '../hooks/useForecast';
 
 const modalStyle = {
   position: 'absolute' as const,
@@ -18,22 +18,6 @@ const modalStyle = {
   flexDirection: 'column',
   alignItems: 'center',
   borderRadius: 4,
-};
-
-const openModalButtonStyle = {
-  width: '160px',
-  height: '32px',
-  borderColor: '#fff',
-  bgcolor: 'rgba(255, 255, 255, 0.2)',
-  color: '#fff',
-  border: '1px solid #fff',
-  borderRadius: '10px',
-  '&:hover': {
-    bgcolor: 'rgba(255, 255, 255, 0.2)',
-    borderColor: '#fff',
-    color: '#fff',
-    border: '1px solid #fff',
-  },
 };
 
 const modalButtonStyle = {
@@ -61,14 +45,13 @@ const textFieldClasses = {
   },
 };
 
-interface TransitionsModalProps {
+interface ITransitionsModalProps {
   open: boolean;
-  handleOpen: () => void;
   handleClose: () => void;
 }
 
-const TransitionsModal: React.FC<TransitionsModalProps> = ({ open, handleOpen, handleClose }) => {
-  const contextData = useContext(ForecastContext);
+const TransitionsModal = ({ open, handleClose }: ITransitionsModalProps) => {
+  const contextData = useForecast();
   const [city, setCity] = useState('');
 
   const handleCityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,57 +66,49 @@ const TransitionsModal: React.FC<TransitionsModalProps> = ({ open, handleOpen, h
   };
 
   return (
-    <div>
-      <Button
-        sx={openModalButtonStyle}
-        onClick={handleOpen}
-      >
-        Search
-      </Button>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={modalStyle}>
-            <Typography
-              sx={{ mb: 2, color: '#fff' }}
-              id="transition-modal-title"
-              variant="h6"
-              component="h2"
+    <Modal
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      open={open}
+      onClose={handleClose}
+      closeAfterTransition
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 500,
+        },
+      }}
+    >
+      <Fade in={open}>
+        <Box sx={modalStyle}>
+          <Typography
+            sx={{ mb: 2, color: '#fff' }}
+            id="transition-modal-title"
+            variant="h6"
+            component="h2"
+          >
+            Enter your city
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              value={city}
+              onChange={handleCityChange}
+              sx={textFieldClasses}
+              id="outlined-basic"
+              label="City"
+              variant="outlined"
+            />
+            <Button
+              sx={modalButtonStyle}
+              type="submit"
+              variant="outlined"
             >
-              Enter your city
-            </Typography>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                value={city}
-                onChange={handleCityChange}
-                sx={textFieldClasses}
-                id="outlined-basic"
-                label="City"
-                variant="outlined"
-              />
-              <Button
-                sx={modalButtonStyle}
-                type="submit"
-                variant="outlined"
-              >
-                Ok
-              </Button>
-            </form>
-          </Box>
-        </Fade>
-      </Modal>
-    </div>
+              Ok
+            </Button>
+          </form>
+        </Box>
+      </Fade>
+    </Modal>
   );
 };
 

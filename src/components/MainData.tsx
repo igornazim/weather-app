@@ -1,7 +1,6 @@
-import { useContext } from 'react';
-
 import map, { MapType, DayOrNight } from '../getWeatherIcon';
-import { ForecastContext, MainweatherData } from '../contexts/index';
+import { MainweatherData } from '../contexts/index';
+import useForecast from '../hooks/useForecast';
 
 export type Weather = {
   description: string;
@@ -48,14 +47,17 @@ const getIcon = (currentIcon: string | DayOrNight, weatherData: IWeatherData) =>
 };
 
 const MainData = () => {
-  const contextData = useContext(ForecastContext);
+  const contextData = useForecast();
   if (!contextData || !contextData.currentWeatherData) {
     return null;
   }
   const data = contextData.currentWeatherData;
-  const icon = map[data.weather[0].main as keyof MapType];
+  const {
+    name, wind: { speed }, main: { temp, humidity }, weather,
+  } = data;
+  const icon = map[weather[0].main as keyof MapType];
   const iconUrl = getIcon(icon, data!);
-  const mphToMetersPerSecond = contextData.temperatureUnits === 'C' ? data.wind.speed : data.wind.speed * 0.44704;
+  const mphToMetersPerSecond = contextData.temperatureUnits === 'C' ? speed : speed * 0.44704;
 
   const today = new Date();
   const formattedDate = today.toLocaleDateString('en-UK', {
@@ -70,7 +72,7 @@ const MainData = () => {
         <div className="geo">
           <img className="weatherIcon" src={`${process.env.PUBLIC_URL}/geo.svg`} alt="geo" />
           <p className="cityName">
-            {data.name}
+            {name}
           </p>
         </div>
         <p className="current-data">
@@ -79,13 +81,13 @@ const MainData = () => {
         </p>
         <div className="temp-group">
           <p className="temp">
-            {Math.round(data.main.temp)}
+            {Math.round(temp)}
           </p>
           <sup>{contextData.temperatureUnits === 'C' ? '°C' : '°F'}</sup>
         </div>
         <div className="skyState">
           <img className="weatherIcon" src={iconUrl} alt="cloudy" />
-          <p>{data.weather[0].description}</p>
+          <p>{weather[0].description}</p>
         </div>
       </div>
       <div className="additional-panel">
@@ -104,7 +106,7 @@ const MainData = () => {
           <p>
             Hum
             {' '}
-            {data.main.humidity}
+            {humidity}
             {' '}
             %
           </p>

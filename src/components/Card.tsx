@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { ForecastContext } from '../contexts/index';
+import useForecast from '../hooks/useForecast';
 
 interface ICardProps {
   temp: number;
@@ -8,7 +7,7 @@ interface ICardProps {
 }
 
 const Card = (props: ICardProps) => {
-  const contextData = useContext(ForecastContext);
+  const contextData = useForecast();
   const { temp, icon, day } = props;
 
   return (

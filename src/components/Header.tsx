@@ -1,7 +1,23 @@
-import React, { useContext, PropsWithChildren } from 'react';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import React, { PropsWithChildren } from 'react';
+import { ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
 import TransitionsModal from './Modal';
-import { ForecastContext } from '../contexts/index';
+import useForecast from '../hooks/useForecast';
+
+const openModalButtonStyle = {
+  width: '160px',
+  height: '32px',
+  borderColor: '#fff',
+  bgcolor: 'rgba(255, 255, 255, 0.2)',
+  color: '#fff',
+  border: '1px solid #fff',
+  borderRadius: '10px',
+  '&:hover': {
+    bgcolor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: '#fff',
+    color: '#fff',
+    border: '1px solid #fff',
+  },
+};
 
 const btnStyles = {
   width: '56px',
@@ -16,7 +32,7 @@ const btnStyles = {
 };
 
 const ColorToggleButton = () => {
-  const contextData = useContext(ForecastContext);
+  const contextData = useForecast();
 
   return (
     <ToggleButtonGroup
@@ -53,7 +69,13 @@ const Header = ({ children }: PropsWithChildren) => {
         <ColorToggleButton />
         <p>Weather App</p>
         {children}
-        <TransitionsModal open={open} handleOpen={handleOpen} handleClose={handleClose} />
+        <Button
+          sx={openModalButtonStyle}
+          onClick={handleOpen}
+        >
+          Search
+        </Button>
+        <TransitionsModal open={open} handleClose={handleClose} />
       </div>
     </div>
   );

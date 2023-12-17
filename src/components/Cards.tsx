@@ -1,8 +1,7 @@
-import { useContext } from 'react';
-
 import Card from './Card';
 import map, { MapType, DayOrNight } from '../getWeatherIcon';
-import { ForecastContext, IweatherPerDay } from '../contexts/index';
+import { IweatherPerDay } from '../contexts/index';
+import useForecast from '../hooks/useForecast';
 
 const getWeekDay = (date: Date) => {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -18,7 +17,7 @@ const getIcon = (currentIcon: string | DayOrNight, weatherData: IweatherPerDay) 
 };
 
 const Cards = () => {
-  const contextData = useContext(ForecastContext);
+  const contextData = useForecast();
   if (!contextData || !contextData.forecastData) {
     return null;
   }

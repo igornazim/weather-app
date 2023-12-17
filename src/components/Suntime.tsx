@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import { ForecastContext } from '../contexts/index';
+import useForecast from '../hooks/useForecast';
 
 const formateTime = (ms: number) => {
   const timestamp = ms * 1000;
@@ -15,7 +14,7 @@ const formateTime = (ms: number) => {
 };
 
 const Suntime = () => {
-  const contextData = useContext(ForecastContext);
+  const contextData = useForecast();
   const time = contextData?.currentWeatherData?.sys;
   const formattedTimeSunrise = time?.sunrise ? formateTime(time.sunrise) : 1;
   const formattedTimeSunset = time?.sunrise ? formateTime(time.sunset) : 1;
